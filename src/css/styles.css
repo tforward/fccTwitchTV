@@ -8,7 +8,7 @@ html {
   }
 
 .frame {
-  background-color: #FAF9FA ;
+  background-color: rgba(250, 249, 250, 0.925) ;
   width: 100%;
   height: 100%;
 }
@@ -16,7 +16,7 @@ html {
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 2fr 3fr 1fr;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr auto auto;
 }
 
 .header {
@@ -24,7 +24,7 @@ html {
   grid-column-start: 2;
   grid-column-end: 4; 
   margin-top: 5vmin;
-
+  margin-bottom: 0.1em;
 }
 
 .title {
@@ -32,11 +32,27 @@ html {
   grid-column-end: 4; 
   font-size: 5vmin;
   color: #fff;
+  margin-left: 5vmin;
 }
 
 .btnBar{
   grid-column-start: 2;
   grid-column-end: 4; 
+  margin-left: 5vmin;
+  margin-bottom: 1vmin;
+}
+
+.btn {
+  background: rgb(74, 197, 241);
+  border: none;
+  padding: 1vmin;
+  margin: 0.2vmin;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  border-radius: 1.3vmin;
+  font-size: 3.5vmin;
+  color: #4A3979;
 }
 
 .feeds {
@@ -50,15 +66,7 @@ html {
   grid-template-columns: 1fr 2fr 4fr;
   grid-template-rows: minmax(6vmin, auto);
   background-color: #fff;
-  padding: 0.5vmin;
-}
-
-.feed-online {
-  background-color: lightgreen;
-}
-
-.feed-offline {
-  background-color: lightcoral;
+  margin: 0.2vmin 0 0.5vmin 0 ;
 }
 
 .feed-icon {
@@ -74,11 +82,13 @@ html {
 .feed-title {
   grid-column-start: 2;
   align-self: center;
+  font-size: 3.5vmin;
 }
 
 .feed-desc {
   grid-column-start: 3;
   align-self: center;
+  font-size: 3vmin;
 }
 
 .footer {
@@ -86,4 +96,13 @@ html {
   grid-column-end: 4;
   grid-row-start: -1;
   background-color: #4A3979;
+  height: 1.63vmin;
+}
+
+.online {
+  background-color: rgb(135, 245, 135);
+}
+
+.offline {
+  background-color: rgb(219, 214, 214);
 }
