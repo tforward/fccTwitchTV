@@ -11,6 +11,7 @@ export function ElementDelegator(proto = null) {
     this.elem = document.createElement(type);
     this.elem.id = elemId;
     this.id = elemId;
+    this.toggle = 0;
     Element.gc(["init", "create"]);
   };
   // Use "init" when working with an existing element

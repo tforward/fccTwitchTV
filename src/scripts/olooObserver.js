@@ -10,10 +10,10 @@ export function SubscribersDelegator() {
     delete Subscribe.init;
   };
   Subscribe.subscribe = function subscribe(item) {
-    this.obj[item.id] = item;
+    this[item.id] = item;
   };
   // Use addItems when you want to subscribe many items
-  Subscribe.addItems = function addItems(items) {
+  Subscribe.addObjs = function addObjs(items) {
     items.forEach(item => Subscribe.subscribe(item));
   };
   Subscribe.unsubscribe = function unsubscribe(items) {
