@@ -66,15 +66,13 @@ export function getTargetId(e, tags) {
   let findId;
   // lookup the path chain for the nearest id that matches the tag types
   const pathArray = Array.from(e.path);
-  for (let i = 0; i < pathArray.length; i += 1) {
-    // Prevents events triggering on the parent element
-    if (e.target !== e.currentTarget) {
-      // Returns the target ID of event for allowed tags Ex: DIV, BUTTON etc.
-      if (tags.indexOf(pathArray[i].tagName) > -1) {
-        findId = pathArray[i].id;
-        if (findId !== "") {
-          return findId;
-        }
+  let i = 0;
+  for (; i < pathArray.length; i += 1) {
+    // Returns the target ID of event for allowed tags Ex: DIV, BUTTON etc.
+    if (tags.indexOf(pathArray[i].tagName) > -1) {
+      findId = pathArray[i].id;
+      if (findId !== "") {
+        return findId;
       }
     }
   }
