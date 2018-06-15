@@ -5,6 +5,8 @@ import { EventDelegator, getTargetId } from "./olooEvent";
 import { SubscribersDelegator } from "./olooObserver";
 import { ElementDelegator, initElemObjects } from "./olooElem";
 
+const $ = require("jquery");
+
 const myBase = Object.create(null);
 const myApp = SubscribersDelegator();
 
@@ -28,14 +30,6 @@ myBase.initApplication = function init() {
 function addElements() {
   const btns = ["btnAll", "btnOnline", "btnOffline"];
   const buttons = initElemObjects(btns, ElementDelegator);
-
-  const getFeed = FeedDelegator();
-
-  getFeed.create("test", "online", "hello", "there");
-
-  const feeds = document.getElementById("feeds");
-
-  feeds.appendChild(getFeed.feed);
 
   myApp.addObjs(buttons);
 }
@@ -71,19 +65,50 @@ function FeedDelegator(proto = null) {
   return Feed;
 }
 
-// function ButtonDelegator(proto = null) {
-//   const Button = Object.create(proto);
-
-//   Button.setup = function setup() {
-//     this.toggle = 0;
-//   };
-//   return Button;
-// }
-
 myBase.main = function main(id) {
   console.log(id);
   const self = myApp.obj[id];
+
+  const user = "ESL_SC2";
+  getTwitch(user);
 };
+
+function getTwitch(user) {
+  const stream = `https://wind-bow.glitch.me/twitch-api/streams/${user}?callback=?`;
+  const channel = `https://wind-bow.glitch.me/twitch-api/channels/${user}?callback=?`;
+
+  $.getJSON(channel, channelData => {
+    $.getJSON(stream, streamData => {
+      getData(channelData, streamData);
+    });
+  });
+}
+
+function getData(cd, sd) {
+  const { name, url, logo } = cd;
+  let userstatus;
+  let game;
+  let status;
+
+  if (sd.stream === null) {
+    userstatus = "offline";
+  } else {
+    userstatus = "online";
+    game = sd.stream.game;
+    status = `: ${sd.stream.channel.status}`;
+  }
+  displayFeed(name, url, logo, userstatus, game, status);
+}
+
+function displayFeed(name, url, logo, userstatus, game, status) {
+  const getFeed = FeedDelegator();
+
+  getFeed.create(name, userstatus, name, status);
+
+  const feeds = document.getElementById("feeds");
+
+  feeds.appendChild(getFeed.feed);
+}
 
 // ======================================================================
 // Handler when the DOM is fully loaded
