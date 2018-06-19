@@ -43,30 +43,40 @@ html {
 }
 
 .btn {
-  background: rgb(74, 197, 241);
+  background: white;
   border: none;
   padding: 1vmin;
   margin: 0.2vmin;
-  font: inherit;
   cursor: pointer;
   outline: inherit;
   border-radius: 1.3vmin;
-  font-size: 3.5vmin;
+  font-size: 3.6vmin;
+  font-weight: bold;
   color: #4A3979;
 }
 
 .feeds {
   grid-column-start: 2;
   grid-column-end: 4;
-  grid-row-start: 3;
+  grid-row-start: auto;
+}
+
+.feedsOffline {
+  grid-column-start: 2;
+  grid-column-end: 4;
+  grid-row-start: auto;
 }
 
 .feed {
   display: grid;
-  grid-template-columns: 1fr 2fr 4fr;
+  grid-template-columns: 1fr 2fr 1.3vmin 4fr;
   grid-template-rows: minmax(6vmin, auto);
   background-color: #fff;
   margin: 0.2vmin 0 0.5vmin 0 ;
+}
+
+.feed a {
+  text-decoration: none;
 }
 
 .feed-icon {
@@ -77,6 +87,7 @@ html {
   background-color: grey;
   width: 6vmin;
   height: 6vmin;
+  background-size: contain;
 }
 
 .feed-title {
@@ -86,7 +97,7 @@ html {
 }
 
 .feed-desc {
-  grid-column-start: 3;
+  grid-column-start: 4;
   align-self: center;
   font-size: 3vmin;
 }
@@ -105,4 +116,8 @@ html {
 
 .offline {
   background-color: rgb(219, 214, 214);
+}
+
+.hidden {
+  display: none;
 }

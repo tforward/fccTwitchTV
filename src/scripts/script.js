@@ -19,6 +19,19 @@ myBase.initApplication = function init() {
   addElements();
   // console.log(myApp.btnAll);
 
+  const users = [
+    "ESL_SC2",
+    "OgamingSC2",
+    "cretetion",
+    "freecodecamp",
+    "storbeck",
+    "habathcx",
+    "RobotCaleb",
+    "noobs2ninjas"
+  ];
+
+  users.forEach(user => getTwitch(user));
+
   function eventController(args, e) {
     const id = getTargetId(e, args.tags);
     if (id !== undefined) {
@@ -37,41 +50,72 @@ function addElements() {
 function FeedDelegator(proto = null) {
   const Feed = Object.create(proto);
 
-  Feed.create = function create(id, theStatus, thetitle, thedesc) {
+  Feed.create = function create(id, theStatus, thetitle, game, theDesc, url, logo) {
     this.feed = document.createDocumentFragment();
 
     this.feedId = id;
     this.status = theStatus;
 
-    const feedDiv = document.createElement("div");
-    feedDiv.id = id;
-    feedDiv.className = `feed ${this.status}`;
-    this.feed.appendChild(feedDiv);
+    const feedMain = document.createElement("div");
+    feedMain.id = id;
+    feedMain.className = `feed ${this.status}`;
+    this.feed.appendChild(feedMain);
 
-    const icon = document.createElement("div");
+    const icon = document.createElement("a");
     icon.className = "feed-icon";
-    feedDiv.appendChild(icon);
+    icon.href = `${url}`;
+    icon.style.backgroundImage = `url(${logo})`;
+    feedMain.appendChild(icon);
+
+    const titleLink = document.createElement("a");
+    titleLink.className = "feed-title";
+    titleLink.href = `${url}`;
+    feedMain.appendChild(titleLink);
 
     const title = document.createElement("div");
-    title.className = "feed-title";
     title.textContent = thetitle;
-    feedDiv.appendChild(title);
+    titleLink.appendChild(title);
+
+    const descLink = document.createElement("a");
+    descLink.className = "feed-desc";
+    descLink.href = `${url}`;
+    feedMain.appendChild(descLink);
 
     const desc = document.createElement("div");
-    desc.className = "feed-desc";
-    desc.textContent = thedesc;
-    feedDiv.appendChild(desc);
+    desc.textContent = "Offline";
+    if (this.status === "online") {
+      desc.textContent = `${game}: ${theDesc}`;
+    }
+    descLink.appendChild(desc);
   };
   return Feed;
 }
 
 myBase.main = function main(id) {
-  console.log(id);
-  const self = myApp.obj[id];
-
-  const user = "ESL_SC2";
-  getTwitch(user);
+  displayFilter(id);
 };
+
+function displayFilter(id) {
+  const feeds = document.getElementById("feeds");
+  const feedsOffline = document.getElementById("feedsOffline");
+
+  switch (id) {
+    case "btnAll":
+      feeds.classList.remove("hidden");
+      feedsOffline.classList.remove("hidden");
+      break;
+    case "btnOnline":
+      feeds.classList.remove("hidden");
+      feedsOffline.classList.add("hidden");
+      break;
+    case "btnOffline":
+      feeds.classList.add("hidden");
+      feedsOffline.classList.remove("hidden");
+      break;
+    default:
+      break;
+  }
+}
 
 function getTwitch(user) {
   const stream = `https://wind-bow.glitch.me/twitch-api/streams/${user}?callback=?`;
@@ -86,28 +130,33 @@ function getTwitch(user) {
 
 function getData(cd, sd) {
   const { name, url, logo } = cd;
-  let userstatus;
+  let streamStatus;
   let game;
-  let status;
+  let desc;
 
   if (sd.stream === null) {
-    userstatus = "offline";
+    streamStatus = "offline";
   } else {
-    userstatus = "online";
+    streamStatus = "online";
     game = sd.stream.game;
-    status = `: ${sd.stream.channel.status}`;
+    desc = `: ${sd.stream.channel.status}`;
   }
-  displayFeed(name, url, logo, userstatus, game, status);
+  displayFeed(name, url, logo, streamStatus, game, desc);
 }
 
-function displayFeed(name, url, logo, userstatus, game, status) {
+function displayFeed(name, url, logo, streamStatus, game, desc) {
   const getFeed = FeedDelegator();
 
-  getFeed.create(name, userstatus, name, status);
+  getFeed.create(name, streamStatus, name, game, desc, url, logo);
 
   const feeds = document.getElementById("feeds");
+  const feedsOffline = document.getElementById("feedsOffline");
 
-  feeds.appendChild(getFeed.feed);
+  if (streamStatus === "online") {
+    feeds.appendChild(getFeed.feed);
+  } else {
+    feedsOffline.appendChild(getFeed.feed);
+  }
 }
 
 // ======================================================================
