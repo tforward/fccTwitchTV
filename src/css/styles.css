@@ -72,6 +72,7 @@ html {
   grid-template-columns: 1fr 2fr 1.3vmin 4fr;
   grid-template-rows: minmax(6vmin, auto);
   background-color: #fff;
+  padding: 0.5vmin 0;
   margin: 0.2vmin 0 0.5vmin 0 ;
 }
 
